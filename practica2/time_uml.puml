@@ -1,0 +1,37 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Time {
+    {static} +TIME_FORMATS: tuple[str, ...]
+    {static} +time_count: int = 0
+    -__hours: int
+    -__minutes: int
+    -__seconds: int
+    -__time_format: str
+    +hours: int <<property, read-only>>
+    +minutes: int <<property, read-only>>
+    +seconds: int <<property, read-only>>
+    +time_format: str <<property, read-only>>
+    +__init__(): None
+    -__assign_format(time_format: str): bool
+    {static} -__is_24hour_format(time_format: str): bool
+    {static} #_is_valid_time(hours: int, minutes: int, seconds: int, time_format: str): bool
+    +set_time(hours: int, minutes: int, seconds: int, time_format: str): bool
+    +get_time(): tuple[int, int, int, str]
+    {static} +from_string(time_string: str): Optional[Time] <<classmethod>>
+    {static} +is_valid_format(time_format: str): bool <<staticmethod>>
+    {static} +get_time_count(): int <<classmethod>>
+}
+note right of Time
+  Estado inicial: 00:00:00 24 HOURS.
+  set_time valida antes de cambiar el estado.
+  Propiedades de lectura; escritura mediante set_time.
+  time_count cuenta construcciones, no objetos vivos.
+  {static} marca ámbito de clase en UML.
+  classmethod recibe cls en Python; staticmethod no.
+end note
+note bottom of Time
+  Funciones externas:
+  format_time(time: Time): str
+  main(): None
+end note
+@enduml
